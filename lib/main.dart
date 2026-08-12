@@ -66,7 +66,7 @@ class _MediaEscolarPageState extends State<MediaEscolarPage> {
     if (mediaCalculada >= 7) {
       situacaoCalculada = 'APROVADO';
     } else if (mediaCalculada >= 5) {
-      situacaoCalculada = 'RECUPERAÇÂO';
+      situacaoCalculada = 'RECUPERAÇÃO';
     } else {
       situacaoCalculada = 'REPROVADO';
     }
@@ -95,6 +95,16 @@ class _MediaEscolarPageState extends State<MediaEscolarPage> {
       media = 0;
       situacao = '';
     });
+  }
+
+  IconData escolherIcone(){
+    if (situacao == 'APROVADO'){
+      return Icons.check_circle;
+    }
+    if(situacao == 'RECUPERAÇÃO'){
+      return Icons.warning;
+    }
+    return Icons.cancel;
   }
 
   @override
@@ -197,6 +207,10 @@ class _MediaEscolarPageState extends State<MediaEscolarPage> {
                   padding: EdgeInsets.all(20),
                   child: Column(
                     children: [
+                      Icon(
+                        escolherIcone(),
+                        size: 40,
+                      ),
                       Text(
                         nomeAluno,
                         style: const TextStyle(

@@ -1,3 +1,10 @@
-# media_escolar
+# Atividade - Calculadora média escolar
 
-A new Flutter project.
+### Objetivo
+
+Desenvolver uma aplicação Flutter capaz de receber o nome e três notas de um aluno, calcular sua média e apresentar a situação escolar.
+
+### Conceitos trabalhados
+
+-MaterialApp
+
