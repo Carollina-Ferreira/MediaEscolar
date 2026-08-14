@@ -58,7 +58,7 @@ O sistema deverá calcular a média e mostrar:
 - [X] Adiicionar uma quarta nota
 - [X] Mostrar a maior nota
 - [X] Mostrar a menor nota
-- [ ] Informa quantos ponto faltaram para aprovação
+- [X] Informa quantos ponto faltaram para aprovação
 - [ ] Adicionar um campo para frequência
 - [ ] Reprovar o aluno que tiver frequência menor que 75%
 

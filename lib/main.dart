@@ -37,6 +37,7 @@ class _MediaEscolarPageState extends State<MediaEscolarPage> {
   double media = 0;
   double maiorNota = 0;
   double menorNota = 0;
+  double pontosFalta = 0;
 
   void calcularMedia() {
     String nome = nomeController.text.trim();
@@ -97,6 +98,11 @@ class _MediaEscolarPageState extends State<MediaEscolarPage> {
       menorNota = nota4;
     }
 
+    pontosFalta = 6.0 - mediaCalculada;
+    if( pontosFalta < 0){
+      pontosFalta = 0;
+    }
+
     setState(() {
       nomeAluno = nome;
       media = mediaCalculada;
@@ -123,6 +129,7 @@ class _MediaEscolarPageState extends State<MediaEscolarPage> {
       situacao = '';
       maiorNota = 0;
       menorNota = 0;
+      pontosFalta = 0;
     });
   }
 
@@ -266,6 +273,8 @@ class _MediaEscolarPageState extends State<MediaEscolarPage> {
                       Text('Média: ${media.toStringAsFixed(1)}'),
                        Text('Maior nota: ${maiorNota.toStringAsFixed(1)}'),
                        Text('Menor nota: ${menorNota.toStringAsFixed(1)}'),
+                       Text('Pontos que faltam: ${pontosFalta.toStringAsFixed(1)}'),
+
 
                       const SizedBox(height: 10),
                       Text(
