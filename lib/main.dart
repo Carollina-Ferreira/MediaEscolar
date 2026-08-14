@@ -35,6 +35,8 @@ class _MediaEscolarPageState extends State<MediaEscolarPage> {
   String nomeAluno = '';
   String situacao = '';
   double media = 0;
+  double maiorNota = 0;
+  double menorNota = 0;
 
   void calcularMedia() {
     String nome = nomeController.text.trim();
@@ -61,9 +63,10 @@ class _MediaEscolarPageState extends State<MediaEscolarPage> {
         nota4 < 0 ||
         nota4 > 10) {
       mostrarMensagem('As notas devem estar entre 0 e 10');
+
       return;
     }
-
+ 
     double mediaCalculada = (nota1 + nota2 + nota3 + nota4) / 4;
 
     String situacaoCalculada;
@@ -74,6 +77,24 @@ class _MediaEscolarPageState extends State<MediaEscolarPage> {
       situacaoCalculada = 'RECUPERAÇÃO';
     } else {
       situacaoCalculada = 'REPROVADO';
+    }
+
+    maiorNota = nota1;
+        if( nota2 > maiorNota){
+          maiorNota = nota2;
+        } if( nota3 > maiorNota){
+          maiorNota = nota3;
+        } if( nota4 > maiorNota){
+          maiorNota = nota4;
+        }
+
+    menorNota = nota1;
+    if( nota2 < menorNota){
+      menorNota = nota2;
+    } if( nota3 < menorNota){
+      menorNota = nota3;
+    } if(nota4 < menorNota){
+      menorNota = nota4;
     }
 
     setState(() {
@@ -100,6 +121,8 @@ class _MediaEscolarPageState extends State<MediaEscolarPage> {
       nomeAluno = '';
       media = 0;
       situacao = '';
+      maiorNota = 0;
+      menorNota = 0;
     });
   }
 
@@ -241,6 +264,8 @@ class _MediaEscolarPageState extends State<MediaEscolarPage> {
 
                       const SizedBox(height: 10),
                       Text('Média: ${media.toStringAsFixed(1)}'),
+                       Text('Maior nota: ${maiorNota.toStringAsFixed(1)}'),
+                       Text('Menor nota: ${menorNota.toStringAsFixed(1)}'),
 
                       const SizedBox(height: 10),
                       Text(
