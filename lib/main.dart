@@ -31,6 +31,7 @@ class _MediaEscolarPageState extends State<MediaEscolarPage> {
   final TextEditingController nota2Controller = TextEditingController();
   final TextEditingController nota3Controller = TextEditingController();
   final TextEditingController nota4Controller = TextEditingController();
+  final TextEditingController frquenciaController = TextEditingController();
 
   String nomeAluno = '';
   String situacao = '';
@@ -38,6 +39,7 @@ class _MediaEscolarPageState extends State<MediaEscolarPage> {
   double maiorNota = 0;
   double menorNota = 0;
   double pontosFalta = 0;
+  double frequenciaAluno = 0;
 
   void calcularMedia() {
     String nome = nomeController.text.trim();
@@ -50,8 +52,21 @@ class _MediaEscolarPageState extends State<MediaEscolarPage> {
 
     double? nota4 = double.tryParse(nota4Controller.text.replaceAll(",", "."));
 
-    if (nome.isEmpty || nota1 == null || nota2 == null || nota3 == null || nota4 == null) {
+    double? frequencia = double.tryParse(
+      frquenciaController.text.replaceAll(",", "."),
+    );
+
+    if (nome.isEmpty ||
+        nota1 == null ||
+        nota2 == null ||
+        nota3 == null ||
+        nota4 == null) {
       mostrarMensagem('Preencha todos os campos corretamente');
+      return;
+    }
+
+    if (frequencia == null || frequencia < 0 || frequencia > 100) {
+      mostrarMensagem('A frequência deve estar entre 0% e 100%');
       return;
     }
 
@@ -67,12 +82,14 @@ class _MediaEscolarPageState extends State<MediaEscolarPage> {
 
       return;
     }
- 
+
     double mediaCalculada = (nota1 + nota2 + nota3 + nota4) / 4;
 
     String situacaoCalculada;
 
-    if (mediaCalculada >= 7) {
+    if (frequencia < 75){
+      situacaoCalculada = 'REPROVADO POR FREQUÊNCIA';
+    } else if (mediaCalculada >= 7) {
       situacaoCalculada = 'APROVADO';
     } else if (mediaCalculada >= 5) {
       situacaoCalculada = 'RECUPERAÇÃO';
@@ -81,25 +98,29 @@ class _MediaEscolarPageState extends State<MediaEscolarPage> {
     }
 
     maiorNota = nota1;
-        if( nota2 > maiorNota){
-          maiorNota = nota2;
-        } if( nota3 > maiorNota){
-          maiorNota = nota3;
-        } if( nota4 > maiorNota){
-          maiorNota = nota4;
-        }
+    if (nota2 > maiorNota) {
+      maiorNota = nota2;
+    }
+    if (nota3 > maiorNota) {
+      maiorNota = nota3;
+    }
+    if (nota4 > maiorNota) {
+      maiorNota = nota4;
+    }
 
     menorNota = nota1;
-    if( nota2 < menorNota){
+    if (nota2 < menorNota) {
       menorNota = nota2;
-    } if( nota3 < menorNota){
+    }
+    if (nota3 < menorNota) {
       menorNota = nota3;
-    } if(nota4 < menorNota){
+    }
+    if (nota4 < menorNota) {
       menorNota = nota4;
     }
 
     pontosFalta = 6.0 - mediaCalculada;
-    if( pontosFalta < 0){
+    if (pontosFalta < 0) {
       pontosFalta = 0;
     }
 
@@ -107,6 +128,8 @@ class _MediaEscolarPageState extends State<MediaEscolarPage> {
       nomeAluno = nome;
       media = mediaCalculada;
       situacao = situacaoCalculada;
+      frequenciaAluno = frequencia;
+      
     });
   }
 
@@ -122,6 +145,7 @@ class _MediaEscolarPageState extends State<MediaEscolarPage> {
     nota2Controller.clear();
     nota3Controller.clear();
     nota4Controller.clear();
+    frquenciaController.clear();
 
     setState(() {
       nomeAluno = '';
@@ -130,14 +154,15 @@ class _MediaEscolarPageState extends State<MediaEscolarPage> {
       maiorNota = 0;
       menorNota = 0;
       pontosFalta = 0;
+      frequenciaAluno = 0;
     });
   }
 
-  IconData escolherIcone(){
-    if (situacao == 'APROVADO'){
+  IconData escolherIcone() {
+    if (situacao == 'APROVADO') {
       return Icons.check_circle;
     }
-    if(situacao == 'RECUPERAÇÃO'){
+    if (situacao == 'RECUPERAÇÃO') {
       return Icons.warning;
     }
     return Icons.cancel;
@@ -221,7 +246,7 @@ class _MediaEscolarPageState extends State<MediaEscolarPage> {
               ),
             ),
 
-             const SizedBox(height: 15),
+            const SizedBox(height: 15),
             TextField(
               controller: nota4Controller,
               keyboardType: const TextInputType.numberWithOptions(
@@ -231,6 +256,18 @@ class _MediaEscolarPageState extends State<MediaEscolarPage> {
                 labelText: 'Nota 4',
                 hintText: 'Digite uma nota de 0 a 10',
                 prefixIcon: Icon(Icons.edit),
+                border: OutlineInputBorder(),
+              ),
+            ),
+
+            const SizedBox(height: 15),
+            TextField(
+              controller: frquenciaController,
+              keyboardType: const TextInputType.numberWithOptions(),
+              decoration: const InputDecoration(
+                labelText: 'Freqência',
+                hintText: 'Digite a frequência',
+                prefixIcon: Icon(Icons.percent),
                 border: OutlineInputBorder(),
               ),
             ),
@@ -257,10 +294,7 @@ class _MediaEscolarPageState extends State<MediaEscolarPage> {
                   padding: EdgeInsets.all(20),
                   child: Column(
                     children: [
-                      Icon(
-                        escolherIcone(),
-                        size: 40,
-                      ),
+                      Icon(escolherIcone(), size: 40),
                       Text(
                         nomeAluno,
                         style: const TextStyle(
@@ -270,11 +304,15 @@ class _MediaEscolarPageState extends State<MediaEscolarPage> {
                       ),
 
                       const SizedBox(height: 10),
+                      Text( 
+                        'Frequência: ${frequenciaAluno.toInt()}%'
+                      ),
                       Text('Média: ${media.toStringAsFixed(1)}'),
-                       Text('Maior nota: ${maiorNota.toStringAsFixed(1)}'),
-                       Text('Menor nota: ${menorNota.toStringAsFixed(1)}'),
-                       Text('Pontos que faltam: ${pontosFalta.toStringAsFixed(1)}'),
-
+                      Text('Maior nota: ${maiorNota.toStringAsFixed(1)}'),
+                      Text('Menor nota: ${menorNota.toStringAsFixed(1)}'),
+                      Text(
+                        'Pontos que faltam: ${pontosFalta.toStringAsFixed(1)}',
+                      ),
 
                       const SizedBox(height: 10),
                       Text(
