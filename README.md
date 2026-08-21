@@ -60,6 +60,6 @@ O sistema deverá calcular a média e mostrar:
 - [X] Mostrar a menor nota
 - [X] Informa quantos ponto faltaram para aprovação
 - [X] Adicionar um campo para frequência
-- [ ] Reprovar o aluno que tiver frequência menor que 75%
+- [X] Reprovar o aluno que tiver frequência menor que 75%
 
 
